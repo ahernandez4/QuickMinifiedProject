@@ -17,28 +17,35 @@ public class QuickUrlController : ControllerBase
         _cache = memoryCache;
     }
     [HttpGet]
-    public async Task<ActionResult> Get(string urlShort){
+    public async Task<ActionResult> Get(string urlShort)
+    {
         string res = "";
-        if(urlShort.Contains("http")){//if we need to return long url if(!urlShort.Contains(myDomainName)){
+        if (urlShort.Contains("http"))
+        {
             MyUrlObject myurl = new MyUrlObject(urlShort);
             _cache.Set(myurl.SmallerURL, myurl);
             res = JsonSerializer.Serialize(myurl);
         }
-        else{
-            if(_cache.TryGetValue(urlShort, out MyUrlObject myurl)){
+        else
+        {
+            if (_cache.TryGetValue(urlShort, out MyUrlObject myurl))
+            {
                 res = JsonSerializer.Serialize(myurl);
             }
-            else{
+            else
+            {
                 res = @"{""OriginalURL"":"""",""SmallerURL"":""""}";
             }
         }
         //Console.WriteLine(res);
-        var result = new ContentResult(){
+        _logger.LogInformation(res);
+        var result = new ContentResult()
+        {
             StatusCode = 200,
             ContentType = "application/json",
             Content = res
         };
         //return NotFound();
         return result;
-    }   
+    }
 }
