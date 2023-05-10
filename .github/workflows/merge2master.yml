@@ -5,9 +5,11 @@ on:
     branches: [ "development" ]
   pull_request:
     branches: [ "development" ]
+    
+  workflow_dispatch:
 
 jobs:
-  build-dev: #this way this and merge-branch actually run in parallel
+  build-dev: 
 
     runs-on: ubuntu-latest
 
